@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema({
     required: true
   },
   phone: Number,
+  is_active: {
+    type: Boolean,
+    default: true
+  }
 })
 
 const User = mongoose.model('User', userSchema)
