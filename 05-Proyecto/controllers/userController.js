@@ -1,9 +1,8 @@
 const userServices = require('../services/userServices');
-const User = require('../models/User');
+const Utils = require('../utils')
 
 module.exports = {
   create: async(req, res) => {
-    console.log(req.body)
     try {
       const user = await userServices.create(req.body);
       res.status(201).send({user});
@@ -47,13 +46,26 @@ module.exports = {
   },
   login: async(req, res)=>{
     try {
+      // Busco al usuario por su email
       const user = await userServices.findUserByEmail(req.body.email);
       if(!user) res.status(404).send({message: 'Usuario no encontrado'});
-
+      
+      // Comparo las contraseñas
       const isMatch = userServices.comparePasswords(req.body.password, user.password);
       if (!isMatch) res.status(409).send({message: 'Datos incorrectos'});
-
-      res.status(200).send({user});
+      
+      // Genero el payload
+      const payload = {
+        name: user.name,
+        id: user._id,
+        email: user.email
+      }
+      
+      // Creo el token a patir del payload
+      const token = Utils.createToken(payload);
+      
+      // Respondo con el usuario y el token
+      res.status(200).send({user, token});
     } catch (error) {
        res.status(404).send({error});
     }
