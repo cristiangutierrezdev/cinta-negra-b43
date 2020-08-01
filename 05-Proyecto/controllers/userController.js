@@ -5,7 +5,7 @@ module.exports = {
   create: async(req, res) => {
     try {
       const user = await userServices.create(req.body);
-      res.status(201).send({user});
+      res.status(201).send(user);
     } catch (error) {
       res.status(409).send({error});
     }
