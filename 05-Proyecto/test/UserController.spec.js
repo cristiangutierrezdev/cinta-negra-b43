@@ -21,7 +21,24 @@ describe("User", () => {
       };
       await userController.create(req, res);
       expect(res.status.mock.calls).toEqual([[201]]);
-      expect(res.send.mock.calls).toEqual([[expect.objectContaining({"is_active": true})]]);
+      expect(res.send.mock.calls).toEqual([
+        [{ user: expect.objectContaining({ is_active: true }) }],
+      ]);
+    });
+  });
+
+  describe("Get Users", () => {
+    it("Get Users", async () => {
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+      };
+      const req = {};
+      await userController.getUsers(req, res);
+      expect(res.status.mock.calls).toEqual([[200]]);
+      expect(res.send.mock.calls).toEqual([
+        [{ users: [expect.objectContaining({ is_active: true })] }],
+      ]);
     });
   });
 });
