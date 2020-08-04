@@ -27,6 +27,11 @@ module.exports = {
     }
   },
   updateUser: async(req, res)=>{
+    if(req.files){
+      const { photo } = req.files;
+      const upload = await Utils.uploadFile(photo.tempFilePath);
+      if(upload) req.body.photo = upload.url;
+    }
     try {
       const user = await userServices.getUser(req.params.id);
       const modifiedUser = await userServices.updateUser(user, req.body);

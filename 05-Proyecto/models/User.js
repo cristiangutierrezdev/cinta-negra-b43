@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  photo: String,
   phone_number: Number,
   is_admin: {
     type: Boolean,
